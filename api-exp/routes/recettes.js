@@ -1,5 +1,6 @@
 import express from "express";
 import { openDb } from "../database/db.js";
+import { verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/recettes/:id", async (req, res) => {
 });
 
 // ✅ Ajouter une recette
-router.post("/recettes", async (req, res) => {
+router.post("/recettes", verifyToken, async (req, res) => {
   const { titre, temps_preparation, difficulte, budget, description } = req.body;
   const db = await openDb();
   await db.run(
@@ -29,10 +30,10 @@ router.post("/recettes", async (req, res) => {
 });
 
 // ✅ Supprimer une recette
-router.delete("/recettes/:id", async (req, res) => {
+router.delete("/recettes/:id", verifyToken, async (req, res) => {
   const db = await openDb();
   await db.run("DELETE FROM recettes WHERE id = ?", [req.params.id]);
-  res.json({ message: "Recette supprimée avec succès" });
+  res.json({ message: "Recette supprimée" });
 });
 
 export default router;
