@@ -1,21 +1,38 @@
 import express from "express";
+import { openDb } from "../database/db.js";
 
 const router = express.Router();
 
-const recettes = [
-  { id: 1, titre: "Pâtes carbonara", temps_preparation: 20, difficulte: 2, budget: 1 },
-  { id: 2, titre: "Tarte aux pommes", temps_preparation: 45, difficulte: 3, budget: 2 },
-];
-
-// READ - toutes les recettes
-router.get("/recettes", (req, res) => {
+// ✅ Récupérer toutes les recettes
+router.get("/recettes", async (req, res) => {
+  const db = await openDb();
+  const recettes = await db.all("SELECT * FROM recettes");
   res.json(recettes);
 });
 
-// READ - une recette par ID
-router.get("/recettes/:id", (req, res) => {
-  const recette = recettes.find(r => r.id === parseInt(req.params.id));
+// ✅ Récupérer une recette par ID
+router.get("/recettes/:id", async (req, res) => {
+  const db = await openDb();
+  const recette = await db.get("SELECT * FROM recettes WHERE id = ?", [req.params.id]);
   recette ? res.json(recette) : res.status(404).json({ message: "Recette non trouvée" });
+});
+
+// ✅ Ajouter une recette
+router.post("/recettes", async (req, res) => {
+  const { titre, temps_preparation, difficulte, budget, description } = req.body;
+  const db = await openDb();
+  await db.run(
+    "INSERT INTO recettes (titre, temps_preparation, difficulte, budget, description) VALUES (?, ?, ?, ?, ?)",
+    [titre, temps_preparation, difficulte, budget, description]
+  );
+  res.status(201).json({ message: "Recette ajoutée avec succès" });
+});
+
+// ✅ Supprimer une recette
+router.delete("/recettes/:id", async (req, res) => {
+  const db = await openDb();
+  await db.run("DELETE FROM recettes WHERE id = ?", [req.params.id]);
+  res.json({ message: "Recette supprimée avec succès" });
 });
 
 export default router;
