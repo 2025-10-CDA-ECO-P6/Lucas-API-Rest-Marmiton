@@ -15,6 +15,15 @@ const init = async () => {
     )
   `);
 
+  // Table utilisateurs
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS utilisateurs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE,
+      password TEXT
+    )
+  `);
+
   console.log("✅ Base de données initialisée avec succès !");
 };
 
