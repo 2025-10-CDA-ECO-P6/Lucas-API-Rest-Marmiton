@@ -24,6 +24,24 @@ const init = async () => {
     )
   `);
 
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS ingredients (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+  `);
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS recettes_ingredients (
+      recette_id INTEGER,
+      ingredient_id INTEGER,
+      quantite TEXT,
+      PRIMARY KEY (recette_id, ingredient_id),
+      FOREIGN KEY (recette_id) REFERENCES recettes(id),
+      FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+    )
+  `);
+
   console.log("✅ Base de données initialisée avec succès !");
 };
 

@@ -1,6 +1,7 @@
 import express from "express";
 import recettesRoutes from "./routes/recettes.js";
 import authRoutes from "./routes/auth.js";
+import ingredientsRoutes from "./routes/ingredients.js";
 
 const app = express();
 const PORT = 3000;
@@ -12,6 +13,7 @@ app.use("/api", authRoutes);
 
 // Routes
 app.use("/api", recettesRoutes);
+app.use("/api", ingredientsRoutes);
 
 // Démarrer le serveur
 app.listen(PORT, () => {
