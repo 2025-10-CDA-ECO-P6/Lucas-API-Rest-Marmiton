@@ -20,6 +20,7 @@ const init = async () => {
     CREATE TABLE IF NOT EXISTS utilisateurs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE,
+      email TEXT UNIQUE,
       password TEXT
     )
   `);

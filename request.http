@@ -1,0 +1,112 @@
+@url = http://localhost:1337
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGhvbWFzLmxhZmFyY2VAZ21haWwuY29tIiwiaWF0IjoxNzYzMTI4Njc2LCJleHAiOjE3NjMxMzU4NzZ9.SuZH_El7nWj4YcFCZXFX5hfRyNRmuGlFehrd8KRwn_k
+
+### Hardcoded
+# @token = e40114d4eb43c2d36fa3828789e23a4bbd4979550c0c9a233c8deb97eca9fab8e88c36d8f2f75344ebbd867aa21f3de8e0d37a207c168138792dc8124d779d8326c20a68b9c811852947330b907100ec3910234febec15f6e887b7dd1b358d9a82cb3584b2139ce07da92232740993f270bb4b382fd7b5769677a423894d6460
+
+### Auth
+POST {{url}}/api/auth/local/register
+Content-Type: application/json
+
+{
+  "username": "thomas",
+  "email": "thomas.lafarce@gmail.com",
+  "password": "8hfds/f!ndfs"
+}
+
+### Auth
+POST {{url}}/api/auth/local/register
+Content-Type: application/json
+
+{
+  "username": "foobar",
+  "email": "foo.bar@strapi.io",
+  "password": "Test1234"
+}
+
+### Login
+POST {{url}}/api/auth/local
+Content-Type: application/json
+
+{
+  "identifier": "thomas.lafarce@gmail.com",
+  "password": "8hfds/f!ndfs"
+}
+
+### Get Me
+GET {{url}}/api/users/me
+Authorization: Bearer {{token}}
+
+### Get recettes
+GET {{url}}/api/recettes
+Authorization: Bearer {{token}}
+
+### Create recipe
+POST {{url}}/api/recettes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "titre": "Pancakes au sirop d'érable",
+    "budget": 1,
+    "temps_preparation": 2,
+    "difficulte": 1
+}
+
+### Create recipe
+POST {{url}}/api/recettes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "titre": "Salade de fruits",
+    "budget": 1,
+    "temps_preparation": 2,
+    "difficulte": 1
+}
+
+### Create recipe
+POST {{url}}/api/recettes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "titre": "Bouillabaisse",
+    "budget": 3,
+    "temps_preparation": 3,
+    "difficulte": 2
+}
+
+### Create recipe
+POST {{url}}/api/recettes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+    "titre": "Lapin au civet",
+    "budget": 2,
+    "temps_preparation": 3,
+    "difficulte": 1
+
+}
+
+### Update recipe
+PATCH {{url}}/api/recettes/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+    "difficulte": 2
+
+}
+
+### Delete recipe
+DELETE {{url}}/api/recettes/2
+Authorization: Bearer {{token}}
+
+### Get recettes where budget is 1
+GET {{url}}/api/recettes?filters[budget][$eq]=1
+Authorization: Bearer {{token}}

@@ -29,6 +29,34 @@ router.post("/recettes", verifyToken, async (req, res) => {
   res.status(201).json({ message: "Recette ajoutée avec succès" });
 });
 
+router.patch("/recettes/:id", verifyToken, async (req, res) => {
+  const db = await openDb();
+  const { id } = req.params;
+
+  const updates = req.body;
+
+  if (!updates || Object.keys(updates).length === 0) {
+    return res.status(400).json({ message: "Aucune donnée à mettre à jour." });
+  }
+
+  const fields = Object.keys(updates)
+    .map((key) => `${key} = ?`)
+    .join(", ");
+
+  const values = Object.values(updates);
+
+  try {
+    await db.run(
+      `UPDATE recettes SET ${fields} WHERE id = ?`,
+      [...values, id]
+    );
+
+    res.json({ message: "Recette mise à jour avec succès" });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur lors de la mise à jour." });
+  }
+});
+
 // ✅ Supprimer une recette
 router.delete("/recettes/:id", verifyToken, async (req, res) => {
   const db = await openDb();
