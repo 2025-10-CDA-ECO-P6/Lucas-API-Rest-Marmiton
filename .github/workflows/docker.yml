@@ -27,7 +27,7 @@ jobs:
           context: ./api-exp       # chemin vers le dossier avec Dockerfile
           file: ./api-exp/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/marmiton-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/api-exp:latest
 
       - name: Ping Render Webhook
         run: |
