@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'api-exp/**'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,19 +16,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./api-exp       # chemin vers le dossier avec Dockerfile
-          file: ./api-exp/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/api-exp:latest
+      - name: Build and Push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/api-exp ./api-exp
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-exp
 
       - name: Ping Render Webhook
         run: |
